@@ -1,0 +1,51 @@
+* {
+  box-sizing: border-box;
+  font-family: "Trebuchet MS", sans-serif;
+}
+
+body {
+  display: grid;
+  justify-items: center;
+  background-color: rgb(244, 244, 244);
+}
+
+/* HEADER */
+body > div:first-child {
+  font-size: 4rem;
+  font-weight: bold;
+  font-family: "Courier New", monospace;
+  padding: 1rem 0;
+}
+
+/* GAMEBOARD PLAYERS */
+.gameboard > div:first-child {
+  padding-bottom: 2rem;
+
+  display: grid;
+  grid-auto-flow: column;
+  justify-items: center;
+}
+.player > div {
+  font-size: 1.5rem;
+}
+.player > div:last-child {
+  text-align: center;
+}
+
+/* GAMEBOARD GRID */
+.grid {
+  width: 40rem;
+  height: 40rem;
+  background-color: #6666fd;
+
+  display: grid;
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+  gap: 0.25rem;
+}
+.grid > div {
+  background-color: white;
+  cursor: pointer;
+}
+.grid > div:hover {
+  border: 4px solid rgb(244, 193, 255);
+}
