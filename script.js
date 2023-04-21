@@ -1,7 +1,32 @@
 const gameBoard = (function () {
-  const gameBoard = ["X", "O", "X", "O", "O", "X", "O", "X", "O"];
+  let gameBoard = [];
+  let currentPlayer;
 
-  return { gameBoard };
+  const getGameBoard = function () {
+    return gameBoard;
+  };
+  const addToGameBoard = function (marker, index) {
+    gameBoard[index] = marker;
+  };
+  const getCurrentPlayer = function () {
+    return currentPlayer;
+  };
+  const setCurrentPlayer = function (player) {
+    currentPlayer = player;
+  };
+  const switchPlayer = function () {
+    currentPlayer !== player1
+      ? (currentPlayer = player1)
+      : (currentPlayer = player2);
+  };
+
+  return {
+    getGameBoard,
+    addToGameBoard,
+    getCurrentPlayer,
+    setCurrentPlayer,
+    switchPlayer,
+  };
 })();
 
 const displayControl = (function () {
@@ -21,7 +46,7 @@ const displayControl = (function () {
 
   const setMarkers = function () {
     for (let i = 0; i < gridSquares.length; i++) {
-      gridSquares[i].textContent = gameBoard.gameBoard[i];
+      gridSquares[i].textContent = gameBoard.getGameBoard()[i];
     }
   };
 
@@ -32,6 +57,13 @@ const displayControl = (function () {
     player2UIName.textContent = player2.name;
   };
 
+  for (let i = 0; i < gridSquares.length; i++) {
+    gridSquares[i].addEventListener("click", () => {
+      gameBoard.addToGameBoard(gameBoard.getCurrentPlayer().marker, i);
+      displayControl.setMarkers();
+    });
+  }
+
   return { setMarkers, playerUI };
 })();
 
@@ -41,5 +73,6 @@ const playerFactory = function (name, marker) {
 
 const player1 = playerFactory("Kweebac", "X");
 const player2 = playerFactory("A1yssa", "O");
+
 displayControl.playerUI();
-displayControl.setMarkers();
+gameBoard.setCurrentPlayer(player1);
