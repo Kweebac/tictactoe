@@ -8,6 +8,7 @@ const gameBoard = (function () {
   const addToGameBoard = function (marker, index) {
     gameBoard[index] = marker;
   };
+
   const getCurrentPlayer = function () {
     return currentPlayer;
   };
@@ -59,8 +60,11 @@ const displayControl = (function () {
 
   for (let i = 0; i < gridSquares.length; i++) {
     gridSquares[i].addEventListener("click", () => {
-      gameBoard.addToGameBoard(gameBoard.getCurrentPlayer().marker, i);
-      displayControl.setMarkers();
+      if (gridSquares[i].textContent === "") {
+        gameBoard.addToGameBoard(gameBoard.getCurrentPlayer().marker, i);
+        displayControl.setMarkers();
+        gameBoard.switchPlayer();
+      }
     });
   }
 
