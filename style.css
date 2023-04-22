@@ -35,8 +35,8 @@ body > div:first-child {
 
 /* GAMEBOARD GRID */
 .grid {
-  width: 40rem;
-  height: 40rem;
+  width: 38rem;
+  height: 38rem;
   background-color: #6666fd;
 
   display: grid;
