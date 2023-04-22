@@ -128,8 +128,14 @@ const playerFactory = function (name, marker) {
   return { name, marker };
 };
 
-const player1 = playerFactory(prompt("Player 1's username"), "X");
-const player2 = playerFactory(prompt("Player 2's username"), "O");
+const player1 = playerFactory(
+  prompt("Player 1's username") || "Player 1",
+  "X"
+);
+const player2 = playerFactory(
+  prompt("Player 2's username") || "Player 2",
+  "O"
+);
 
 displayControl.playerUI();
 gameBoard.setCurrentPlayer(player1);
