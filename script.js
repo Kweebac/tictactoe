@@ -2,6 +2,15 @@ const gameBoard = (function () {
   let _gameBoard = [];
   let _currentPlayer;
 
+  const chooseRandomEmptySquare = function () {
+    let emptySquares = [];
+    for (let i = 0; i < 9; i++) {
+      if (_gameBoard[i] !== "X" && _gameBoard[i] !== "O") {
+        emptySquares.push(i);
+      }
+    }
+    return emptySquares[Math.floor(Math.random() * emptySquares.length)];
+  };
   const getGameBoard = function () {
     return _gameBoard;
   };
@@ -31,6 +40,7 @@ const gameBoard = (function () {
     setCurrentPlayer,
     switchPlayer,
     resetGameBoard,
+    chooseRandomEmptySquare,
   };
 })();
 
@@ -44,9 +54,6 @@ const displayControl = (function () {
   );
   const _resetButton = document.querySelector("button");
   const _result = document.querySelector(".result");
-  const _playerVsComputerButton = document.querySelector(
-    ".opponent button:first-child"
-  );
   const _playerVsPlayerButton = document.querySelector(
     ".opponent button:last-child"
   );
@@ -71,7 +78,7 @@ const displayControl = (function () {
     );
   };
 
-  const _isGameOver = function () {
+  const isGameOver = function () {
     if (
       _isThreeInARow(0, 1, 2) ||
       _isThreeInARow(3, 4, 5) ||
@@ -101,34 +108,11 @@ const displayControl = (function () {
     }
   };
 
-  for (let i = 0; i < _gridSquares.length; i++) {
-    _gridSquares[i].addEventListener("click", () => {
-      if (_gridSquares[i].textContent === "") {
-        gameBoard.addToGameBoard(gameBoard.getCurrentPlayer().marker, i);
-        setMarkers();
-
-        if (!_isGameOver()) {
-          gameBoard.switchPlayer();
-        }
-      }
-    });
-  }
-
   _resetButton.addEventListener("click", () => {
     gameBoard.resetGameBoard();
     setMarkers();
     gameBoard.setCurrentPlayer(player1);
     _result.style.visibility = "hidden";
-  });
-
-  _playerVsComputerButton.addEventListener("click", () => {
-    opponentSelect.style.visibility = "hidden";
-
-    player1 = playerFactory(prompt("Player 1's username") || "Player 1", "X");
-    player2 = playerFactory("Computer", "O");
-
-    playerUI();
-    gameBoard.setCurrentPlayer(player1);
   });
 
   _playerVsPlayerButton.addEventListener("click", () => {
@@ -139,9 +123,61 @@ const displayControl = (function () {
 
     playerUI();
     gameBoard.setCurrentPlayer(player1);
+
+    for (let i = 0; i < _gridSquares.length; i++) {
+      _gridSquares[i].addEventListener("click", () => {
+        if (_gridSquares[i].textContent === "") {
+          gameBoard.addToGameBoard(gameBoard.getCurrentPlayer().marker, i);
+          setMarkers();
+
+          if (!isGameOver()) {
+            gameBoard.switchPlayer();
+          }
+        }
+      });
+    }
   });
 
-  return { setMarkers, playerUI };
+  return { setMarkers, playerUI, isGameOver };
+})();
+
+const AI = (function () {
+  const _playerVsComputerButton = document.querySelector(
+    ".opponent button:first-child"
+  );
+  const opponentSelect = document.querySelector(".opponent");
+  const _gridSquares = document.querySelectorAll(".grid > div");
+
+  _playerVsComputerButton.addEventListener("click", () => {
+    opponentSelect.style.visibility = "hidden";
+
+    player1 = playerFactory(prompt("Player 1's username") || "Player 1", "X");
+    player2 = playerFactory("Computer", "O");
+
+    displayControl.playerUI();
+    gameBoard.setCurrentPlayer(player1);
+
+    for (let i = 0; i < _gridSquares.length; i++) {
+      _gridSquares[i].addEventListener("click", () => {
+        if (_gridSquares[i].textContent === "") {
+          gameBoard.addToGameBoard(gameBoard.getCurrentPlayer().marker, i);
+          displayControl.setMarkers();
+          if (!displayControl.isGameOver()) {
+            // AI turn
+            gameBoard.switchPlayer();
+            gameBoard.addToGameBoard(
+              gameBoard.getCurrentPlayer().marker,
+              gameBoard.chooseRandomEmptySquare()
+            );
+            displayControl.setMarkers();
+            if (!displayControl.isGameOver()) {
+              gameBoard.switchPlayer();
+            }
+          }
+        }
+      });
+    }
+  });
 })();
 
 const playerFactory = function (name, marker) {
