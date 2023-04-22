@@ -36,12 +36,6 @@ const gameBoard = (function () {
 
 const displayControl = (function () {
   const _gridSquares = document.querySelectorAll(".grid > div");
-  const _player1UIMarker = document.querySelector(
-    ".player:first-child > div:last-child"
-  );
-  const _player2UIMarker = document.querySelector(
-    ".player:last-child > div:last-child"
-  );
   const _player1UIName = document.querySelector(
     ".player:first-child > div:first-child"
   );
@@ -65,8 +59,6 @@ const displayControl = (function () {
   };
 
   const playerUI = function () {
-    _player1UIMarker.textContent = player1.marker;
-    _player2UIMarker.textContent = player2.marker;
     _player1UIName.textContent = player1.name;
     _player2UIName.textContent = player2.name;
   };
@@ -125,6 +117,7 @@ const displayControl = (function () {
   _resetButton.addEventListener("click", () => {
     gameBoard.resetGameBoard();
     setMarkers();
+    gameBoard.setCurrentPlayer(player1);
     _result.style.visibility = "hidden";
   });
 
