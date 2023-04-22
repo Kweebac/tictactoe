@@ -79,3 +79,28 @@ button {
   box-shadow: 5px 5px 5px lightcoral;
   visibility: hidden;
 }
+
+/* OPPONENT SELECT SCREEN */
+.opponent {
+  height: 100vh;
+  width: 100vw;
+  background-color: gray;
+  position: absolute;
+
+  display: grid;
+  place-content: center;
+}
+.opponent > h1 {
+  text-align: center;
+}
+.opponent > div {
+  display: grid;
+  grid-auto-flow: column;
+  justify-items: center;
+  gap: 1.5rem;
+}
+.opponent button {
+  margin-top: 0rem;
+  width: 18rem;
+  border: 2px solid rgb(46, 34, 34);
+}

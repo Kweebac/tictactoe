@@ -50,6 +50,13 @@ const displayControl = (function () {
   );
   const _resetButton = document.querySelector("button");
   const _result = document.querySelector(".result");
+  const _playerVsComputerButton = document.querySelector(
+    ".opponent button:first-child"
+  );
+  const _playerVsPlayerButton = document.querySelector(
+    ".opponent button:last-child"
+  );
+  const opponentSelect = document.querySelector(".opponent");
 
   const setMarkers = function () {
     for (let i = 0; i < _gridSquares.length; i++) {
@@ -121,6 +128,26 @@ const displayControl = (function () {
     _result.style.visibility = "hidden";
   });
 
+  _playerVsComputerButton.addEventListener("click", () => {
+    opponentSelect.style.visibility = "hidden";
+
+    player1 = playerFactory(prompt("Player 1's username") || "Player 1", "X");
+    player2 = playerFactory("Computer", "O");
+
+    playerUI();
+    gameBoard.setCurrentPlayer(player1);
+  });
+
+  _playerVsPlayerButton.addEventListener("click", () => {
+    opponentSelect.style.visibility = "hidden";
+
+    player1 = playerFactory(prompt("Player 1's username") || "Player 1", "X");
+    player2 = playerFactory(prompt("Player 2's username") || "Player 2", "O");
+
+    playerUI();
+    gameBoard.setCurrentPlayer(player1);
+  });
+
   return { setMarkers, playerUI };
 })();
 
@@ -128,14 +155,5 @@ const playerFactory = function (name, marker) {
   return { name, marker };
 };
 
-const player1 = playerFactory(
-  prompt("Player 1's username") || "Player 1",
-  "X"
-);
-const player2 = playerFactory(
-  prompt("Player 2's username") || "Player 2",
-  "O"
-);
-
-displayControl.playerUI();
-gameBoard.setCurrentPlayer(player1);
+let player1 = undefined;
+let player2 = undefined;
