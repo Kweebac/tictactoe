@@ -49,6 +49,7 @@ const displayControl = (function () {
     ".player:last-child > div:first-child"
   );
   const _resetButton = document.querySelector("button");
+  const _result = document.querySelector(".result");
 
   const setMarkers = function () {
     for (let i = 0; i < _gridSquares.length; i++) {
@@ -82,9 +83,22 @@ const displayControl = (function () {
       _isThreeInARow(0, 4, 8) ||
       _isThreeInARow(2, 4, 6)
     ) {
-      console.log(`${gameBoard.getCurrentPlayer().name} wins`);
+      for (let i = 0; i < 9; i++) {
+        if (
+          gameBoard.getGameBoard()[i] !== "X" &&
+          gameBoard.getGameBoard()[i] !== "O"
+        ) {
+          gameBoard.addToGameBoard(" ", i);
+        }
+      }
+      setMarkers();
+      _result.style.visibility = "visible";
+      _result.textContent = `${gameBoard.getCurrentPlayer().name} wins!`;
+      return true;
     } else if (gameBoard.getGameBoard().join("").length === 9) {
-      console.log("It's a tie");
+      _result.style.visibility = "visible";
+      _result.textContent = "It's a tie!";
+      return true;
     }
   };
 
@@ -93,14 +107,18 @@ const displayControl = (function () {
       if (_gridSquares[i].textContent === "") {
         gameBoard.addToGameBoard(gameBoard.getCurrentPlayer().marker, i);
         setMarkers();
-        _isGameOver();
-        gameBoard.switchPlayer();
+
+        if (!_isGameOver()) {
+          gameBoard.switchPlayer();
+        }
       }
     });
   }
+
   _resetButton.addEventListener("click", () => {
     gameBoard.resetGameBoard();
     setMarkers();
+    _result.style.visibility = "hidden";
   });
 
   return { setMarkers, playerUI };
@@ -110,8 +128,8 @@ const playerFactory = function (name, marker) {
   return { name, marker };
 };
 
-const player1 = playerFactory("Kweebac", "X");
-const player2 = playerFactory("A1yssa", "O");
+const player1 = playerFactory(prompt("Player 1's username"), "X");
+const player2 = playerFactory(prompt("Player 2's username"), "O");
 
 displayControl.playerUI();
 gameBoard.setCurrentPlayer(player1);
