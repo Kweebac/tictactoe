@@ -114,6 +114,14 @@ const displayControl = (function () {
     gameBoard.setCurrentPlayer(player1);
     _result.style.visibility = "hidden";
   });
+  addEventListener("keydown", (e) => {
+    if (e.key.toUpperCase() === "R") {
+      gameBoard.resetGameBoard();
+      setMarkers();
+      gameBoard.setCurrentPlayer(player1);
+      _result.style.visibility = "hidden";
+    }
+  });
 
   _playerVsPlayerButton.addEventListener("click", () => {
     opponentSelect.style.visibility = "hidden";
