@@ -8,6 +8,9 @@ const gameBoard = (function () {
   const addToGameBoard = function (marker, index) {
     _gameBoard[index] = marker;
   };
+  const resetGameBoard = function () {
+    _gameBoard = [];
+  };
 
   const getCurrentPlayer = function () {
     return _currentPlayer;
@@ -27,6 +30,7 @@ const gameBoard = (function () {
     getCurrentPlayer,
     setCurrentPlayer,
     switchPlayer,
+    resetGameBoard,
   };
 })();
 
@@ -44,6 +48,7 @@ const displayControl = (function () {
   const _player2UIName = document.querySelector(
     ".player:last-child > div:first-child"
   );
+  const _resetButton = document.querySelector("button");
 
   const setMarkers = function () {
     for (let i = 0; i < _gridSquares.length; i++) {
@@ -77,7 +82,7 @@ const displayControl = (function () {
       _isThreeInARow(0, 4, 8) ||
       _isThreeInARow(2, 4, 6)
     ) {
-      console.log("You win");
+      console.log(`${gameBoard.getCurrentPlayer().name} wins`);
     } else if (gameBoard.getGameBoard().join("").length === 9) {
       console.log("It's a tie");
     }
@@ -93,6 +98,10 @@ const displayControl = (function () {
       }
     });
   }
+  _resetButton.addEventListener("click", () => {
+    gameBoard.resetGameBoard();
+    setMarkers();
+  });
 
   return { setMarkers, playerUI };
 })();

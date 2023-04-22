@@ -54,3 +54,15 @@ body > div:first-child {
 .grid > div:hover {
   background-color: rgb(223, 223, 223);
 }
+
+/* RESET BUTTON */
+button {
+  margin-top: 2rem;
+  padding: 0.5rem;
+  font-size: 1.8rem;
+  width: 10rem;
+  border: 1px solid rgb(98, 88, 88);
+  border-radius: 5px;
+  background-color: rgb(161, 228, 255);
+  cursor: pointer;
+}
